@@ -15,10 +15,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "owner@somemail.ru",
                 FirstName = "Иван",
                 LastName = "Сергеев",
-                Roles = new List<Role>()
-                {
-                    Roles.FirstOrDefault(x => x.Name == "Admin")  
-                },
+                Roles = [Roles.FirstOrDefault(x => x.Name == "Admin")],
                 AppliedPromocodesCount = 5
             },
             new Employee()
@@ -27,10 +24,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "andreev@somemail.ru",
                 FirstName = "Петр",
                 LastName = "Андреев",
-                Roles = new List<Role>()
-                {
-                    Roles.FirstOrDefault(x => x.Name == "PartnerManager")  
-                },
+                Roles = [Roles.FirstOrDefault(x => x.Name == "PartnerManager")],
                 AppliedPromocodesCount = 10
             },
         };

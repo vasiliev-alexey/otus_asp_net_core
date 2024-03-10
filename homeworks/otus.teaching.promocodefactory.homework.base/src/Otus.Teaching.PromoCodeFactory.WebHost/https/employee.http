@@ -1,0 +1,46 @@
+### GET  all Employees
+GET  https://localhost:5001/api/v1/Employees
+Accept: application/json
+
+### GET  all Employees
+GET  https://localhost:5001/api/v1/Employees/f766e2bf-340a-46ea-bff3-f1700b435895
+Accept: application/json
+
+
+### Create random employee
+POST https://localhost:5001/api/v1/Employees
+Content-Type: application/json
+
+{
+  "firstName": "{{$random.alphabetic(8)}}",
+  "lastName": "{{$random.alphabetic(8)}}",
+  "email": "{{$random.email}}",
+  "roles": [
+    {
+      "id": "53729686-a368-4eeb-8bfa-cc69b6050d02", 
+      "name": "string",
+      "description": "string"
+    }
+  ]
+}
+
+### Patch   employee
+PATCH https://localhost:5001/api/v1/Employees/f766e2bf-340a-46ea-bff3-f1700b435895
+Content-Type: application/json
+
+{
+  "firstName": "{{$random.alphabetic(8)}}",
+  "lastName": "{{$random.alphabetic(8)}}",
+  "email": "{{$random.email}}",
+  "roles": [
+    {
+      "id": "53729686-a368-4eeb-8bfa-cc69b6050d02",
+      "name": "string",
+      "description": "string"
+    }
+  ],
+  "appliedPromocodesCount": 0
+}
+
+### Delete   employee
+DELETE https://localhost:5001/api/v1/Employees/f766e2bf-340a-46ea-bff3-f1700b435895
