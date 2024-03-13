@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Otus.Teaching.PromoCodeFactory.Core.Domain;
+using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories
 {
@@ -11,5 +12,9 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories
         Task<IEnumerable<T>> GetAllAsync();
         
         Task<T> GetByIdAsync(Guid id);
+        
+        Task<T> AddAsync(T entity);
+        Task <T>UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
     }
 }
