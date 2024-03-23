@@ -339,3 +339,8 @@ ASALocalRun/
 .localhistory/
 
 .vscode/
+# SQLite files
+*.db*
+notes.md
+
+**/obj/

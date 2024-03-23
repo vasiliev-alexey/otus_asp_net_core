@@ -1,0 +1,20 @@
+### POST /api/promocode ###
+POST  https://localhost:5001/api/v1/Promocodes
+Content-Type: application/json
+
+{
+  "serviceInfo":  "{{$random.alphabetic(8)}}",
+  "partnerName": "{{$random.alphabetic(8)}}",
+  "promoCode":  "{{$random.alphabetic(8)}}",
+  "preference": "Театр"
+}
+
+### GET  Customer by id
+GET  https://localhost:5001/api/v1/Customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0
+Content-Type: application/json
+Accept: application/json
+
+
+#### GET  all Promocodes
+GET  https://localhost:5001/api/v1/Promocodes
+Accept: application/json

@@ -1,0 +1,4 @@
+
+### GET  all Preferences
+GET  https://localhost:5001/api/v1/Preferences
+Accept: application/json
