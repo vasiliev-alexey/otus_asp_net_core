@@ -15,13 +15,13 @@ Content-Type: application/json
   "firstName": "{{$random.alphabetic(8)}}",
   "lastName": "{{$random.alphabetic(8)}}",
   "email": "{{$random.email}}",
-  "roles": [
+  "role": 
     {
       "id": "53729686-a368-4eeb-8bfa-cc69b6050d02", 
       "name": "string",
       "description": "string"
     }
-  ]
+  
 }
 
 ### Patch   employee
@@ -32,13 +32,13 @@ Content-Type: application/json
   "firstName": "{{$random.alphabetic(8)}}",
   "lastName": "{{$random.alphabetic(8)}}",
   "email": "{{$random.email}}",
-  "roles": [
+  "role": 
     {
       "id": "53729686-a368-4eeb-8bfa-cc69b6050d02",
       "name": "string",
       "description": "string"
     }
-  ],
+  ,
   "appliedPromocodesCount": 0
 }
 

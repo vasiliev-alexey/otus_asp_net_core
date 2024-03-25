@@ -1,0 +1,44 @@
+
+### GET  all Preferences
+GET  https://localhost:5001/api/v1/Customers
+Accept: application/json
+
+
+### GET  Customer by id
+GET  https://localhost:5001/api/v1/Customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0
+Content-Type: application/json
+Accept: application/json
+
+
+
+### Create random customer
+POST  https://localhost:5001/api/v1/Customers
+Content-Type: application/json
+
+{
+  "firstName": "{{$random.alphabetic(8)}}",
+  "lastName": "{{$random.alphabetic(8)}}",
+  "email": "{{$random.email}}",
+  "PreferenceIds": [
+    "c4bda62e-fc74-4256-a956-4760b3858cbd",
+     "ef7f299f-92d7-459f-896e-078ed53ef99c" 
+  ],
+  "promoCodes": []
+}
+
+### Update Customer
+PUT  https://localhost:5001/api/v1/Customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0
+Content-Type: application/json
+
+{
+  "firstName": "{{$random.alphabetic(8)}}",
+  "lastName": "{{$random.alphabetic(8)}}",
+  "email": "{{$random.email}}",
+  "PreferenceIds": [
+    "76324c47-68d2-472d-abb8-33cfa8cc0c84"
+  ],
+  "promoCodes": []
+}
+
+### Delete Customer
+DELETE  https://localhost:5001/api/v1/Customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0
