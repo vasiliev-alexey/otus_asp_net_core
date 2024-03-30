@@ -6,13 +6,12 @@ on:
     branches:
       - hw04
 
-defaults:
-  run:
-    working-directory: ./homeworks/otus.teaching.promocodefactory.homework.unittests/src
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: './homeworks/otus.teaching.promocodefactory.homework.unittests/src'
     steps:
       - uses: actions/checkout@v4
 
@@ -22,4 +21,5 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-      -  run: dotnet test  ./homeworks/otus.teaching.promocodefactory.homework.unittests/src/Otus.Teaching.PromoCodeFactory.UnitTests  --no-build   
+      - run: dotnet test  Otus.Teaching.PromoCodeFactory.UnitTests --no-build --verbosity normal
+        working-directory: ${{env.working-directory}}
