@@ -21,5 +21,8 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
+      - run: pwd
+        working-directory: ${{env.working-directory}}
+        
       - run: dotnet test  Otus.Teaching.PromoCodeFactory.UnitTests --no-build --verbosity normal
         working-directory: ${{env.working-directory}}
