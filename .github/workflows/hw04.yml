@@ -22,7 +22,5 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-
-      - name: Test
-	run:  dotnet test Otus.Teaching.PromoCodeFactory.UnitTests --no-build     
+      -  run:  dotnet test Otus.Teaching.PromoCodeFactory.UnitTests --no-build     
 
