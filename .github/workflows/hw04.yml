@@ -21,5 +21,6 @@ jobs:
 
 
       - name: Test
-        run:  dotnet test Otus.Teaching.PromoCodeFactory.UnitTests --no-build     
 	working-directory: ./homeworks/otus.teaching.promocodefactory.homework.unittests/src
+	run:  dotnet test Otus.Teaching.PromoCodeFactory.UnitTests --no-build     
+
