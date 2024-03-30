@@ -23,6 +23,10 @@ jobs:
 
       - run: pwd
         working-directory: ${{env.working-directory}}
+
+      - run: dotnet build  Otus.Teaching.PromoCodeFactory.UnitTests --verbosity normal
+        working-directory: ${{env.working-directory}}
+
         
-      - run: dotnet test  Otus.Teaching.PromoCodeFactory.UnitTests --verbosity normal
+      - run: dotnet test  Otus.Teaching.PromoCodeFactory.UnitTests --verbosity normal -no-build
         working-directory: ${{env.working-directory}}
