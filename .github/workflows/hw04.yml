@@ -22,5 +22,6 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-      -  run:  dotnet test Otus.Teaching.PromoCodeFactory.UnitTests --no-build     
+      -  run:  dotnet test Otus.Teaching.PromoCodeFactory.UnitTests --no-build 
+         working-directory: ./homeworks/otus.teaching.promocodefactory.homework.unittests/src
 
