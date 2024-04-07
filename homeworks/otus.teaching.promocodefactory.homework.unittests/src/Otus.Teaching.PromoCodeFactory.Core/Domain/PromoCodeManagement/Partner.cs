@@ -12,6 +12,6 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 
         public bool IsActive { get; set; }
 
-        public virtual ICollection<PartnerPromoCodeLimit> PartnerLimits { get; set; }
+        public virtual ICollection<PartnerPromoCodeLimit> PartnerLimits { get; set; } = new List<PartnerPromoCodeLimit>();
     }
 }

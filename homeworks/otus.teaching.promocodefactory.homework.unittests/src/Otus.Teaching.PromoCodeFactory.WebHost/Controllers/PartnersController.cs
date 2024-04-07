@@ -18,10 +18,12 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         : ControllerBase
     {
         private readonly IRepository<Partner> _partnersRepository;
+        private readonly TimeProvider _timeProvider;
 
-        public PartnersController(IRepository<Partner> partnersRepository)
+        public PartnersController(IRepository<Partner> partnersRepository, TimeProvider timeProvider)
         {
             _partnersRepository = partnersRepository;
+            _timeProvider = timeProvider;
         }
 
         [HttpGet]
@@ -57,6 +59,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 
             if (partner == null)
                 return NotFound();
+            
+            if (!partner.IsActive) return BadRequest("Данный партнер не активен");
             
             var limit = partner.PartnerLimits
                 .FirstOrDefault(x => x.Id == limitId);
@@ -98,7 +102,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 partner.NumberIssuedPromoCodes = 0;
                 
                 //При установке лимита нужно отключить предыдущий лимит
-                activeLimit.CancelDate = DateTime.Now;
+                activeLimit.CancelDate =  _timeProvider.GetUtcNow().DateTime;
             }
 
             if (request.Limit <= 0)

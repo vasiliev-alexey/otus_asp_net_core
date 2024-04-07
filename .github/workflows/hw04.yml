@@ -1,0 +1,32 @@
+
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - hw04
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: './homeworks/otus.teaching.promocodefactory.homework.unittests/src'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+          include-prerelease: true
+
+      - run: pwd
+        working-directory: ${{env.working-directory}}
+
+      - run: dotnet build  Otus.Teaching.PromoCodeFactory.UnitTests 
+        working-directory: ${{env.working-directory}}
+
+        
+      - run: dotnet test  Otus.Teaching.PromoCodeFactory.UnitTests --verbosity normal --no-build
+        working-directory: ${{env.working-directory}}
