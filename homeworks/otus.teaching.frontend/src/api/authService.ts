@@ -30,6 +30,32 @@ class AuthService {
             return {isLoggedIn: false}
         }
     };
+
+
+    RegisterUser = async (
+        username: string,
+        password: string
+    ): Promise<{ isRegistered: boolean }  | any> => {
+        try {
+            const response = await axios.post(
+                `${this.authHost}/register`,
+                {
+                    username,
+                    password,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+            console.log("response", response.data);
+            return response.data;
+        } catch (e : any) {
+            if (e.response.status === 401) {
+                throw e.response.data;
+            }
+        }
+    };
+
     logout = async (): Promise<void> => {
 
         await axios.post(`${this.authHost}/logout`, {});

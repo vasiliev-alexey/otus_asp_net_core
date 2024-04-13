@@ -30,6 +30,12 @@ const config: Configuration = {
     module: {
         rules: [
             {
+                test: /\.(jpg|svg|png)$/,
+                loader: 'url-loader',
+            },
+
+
+            {
                 test: /.tsx?$/,
                 use: "ts-loader",
                 exclude: /node_modules/,

@@ -1,6 +1,12 @@
 import express, {Application} from "express";
 import cors, {CorsOptions} from "cors";
 
+const usesr = [
+    {username: "admin", password: "admin"},
+    {username: "root", password: "root"},
+
+]
+
 
 export default class Server {
     constructor(app: Application) {
@@ -22,12 +28,21 @@ export default class Server {
             const {username, password} = req.body;
 
 
-            if (username === "admin" && password === username) {
+            if (usesr.filter(u => u.username === username && u.password === password).length > 0) {
                 res.send({isLoggedIn: true, userID: "123", userName: "admin"});
-            } else {
-                res.send({isLoggedIn: false});
             }
+            res.send({isLoggedIn: false});
         });
+
+
+        app.post("/auth/register", (req, res) => {
+            const {username, password} = req.body;
+            usesr.push({username, password});
+            console.log("Registering user: " + username);
+            res.send({IsRegistered: true});
+
+        });
+
 
         app.post("/auth/logout", (_, res) => {
             res.send({isLoggedIn: false});

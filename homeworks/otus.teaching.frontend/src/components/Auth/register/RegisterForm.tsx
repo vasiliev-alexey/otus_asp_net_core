@@ -1,27 +1,41 @@
 import React, {useMemo, useState} from 'react';
 import authService from "../../../api/authService";
-import "./LoginForm.scss";
+import "./RegisterForm.scss";
 import {useNavigate} from "react-router";
 
-const LoginForm = () => {
+export const RegisterForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [passwordConf, setPasswordConf] = useState('');
+    const [loggedIn, setRegisterIn] = useState(false);
+
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleRegister = async () => {
 
-        if (username && password) {
-            setLoggedIn(false);
-            const res = await authService.LoginUser(username, password);
-            if (res.isLoggedIn) {
-                setLoggedIn(true);
-                navigate('/');
+        if (passwordConf !== password) {
+            alert('Passwords do not match!');
+
+            return;
+        }
+
+        if (username && password && password === passwordConf) {
+         //   setRegisterIn(false);
+
+
+
+            const res = await authService.RegisterUser(username, password);
+        console.log( "isRegistered", res , res.IsRegistered);
+            if (res.IsRegistered) {
+                alert('Register in successfully!');
+                navigate('/login');
+                // setRegisterIn(true);
             } else {
                 alert('Login failed!');
-                setLoggedIn(false);
+                setRegisterIn(false);
                 setUsername(res.userName ?? '');
                 setPassword(res.userID ?? '');
+                setPasswordConf(res.userID ?? '');
             }
 
         } else {
@@ -32,7 +46,7 @@ const LoginForm = () => {
     const handleLogout = async () => {
 
         await authService.logout();
-        setLoggedIn(false);
+        setRegisterIn(false);
         setUsername('');
         setPassword('');
     };
@@ -58,14 +72,21 @@ const LoginForm = () => {
                                value={password}
                                onChange={(e) => setPassword(e.target.value)}/>
                     </div>
+
                     <div className="input-group">
-                        <button type="submit" className="login_btn" onClick={handleLogin}>Войти</button>
+                        <label className="input-group__label" htmlFor="userPassInput">Повторите Пароль</label>
+                        <input type="password" id="userPassInput" className="input-group__input"
+                               value={passwordConf}
+                               onChange={(e) => setPasswordConf(e.target.value)}/>
                     </div>
-                    {/*<input*/}
+
+                    <div className="input-group">
+                        <button type="submit" className="login_btn" onClick={handleRegister}>Зарегистрироваться</button>
+                    </div>
+
                 </div>
             )}
         </div>
     );
 };
 
-export default LoginForm;
