@@ -7,7 +7,7 @@ class AuthService {
     LoginUser = async (
         username: string,
         password: string
-    ): Promise<{ isLoggedIn: boolean; userID?: string; userName?: string }> => {
+    ): Promise<{ isLoggedIn: boolean; userID: string; userName: string }> => {
 
         try {
 
@@ -25,9 +25,9 @@ class AuthService {
                 return {isLoggedIn: true, userID: response.data.userID, userName: username};
             }
 
-            return {isLoggedIn: false};
+            return {isLoggedIn: false, userID: "", userName: ""};
         } catch (e: any) {
-            return {isLoggedIn: false}
+            return {isLoggedIn: false , userID: "", userName: ""};
         }
     };
 

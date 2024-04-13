@@ -4,7 +4,8 @@ import LoginForm from "../Auth/login/LoginForm";
 import React from "react";
 import {RegisterForm} from "../Auth/register/RegisterForm";
 import {HomePage} from "../home/HomePage";
-import Logout from "../Auth/logout/Logout";
+import {Logout} from "../Auth/logout/Logout";
+import {useAppSelector} from "../../hooks/reducs";
 
 
 export const AppRouter: React.FC = () => {
@@ -27,8 +28,9 @@ export const AppRouter: React.FC = () => {
 
 // @ts-ignore
 const ProtectedRoute = ({children}) => {
+    const isAuth = useAppSelector((state) => state.auth.isAuthenticated)
     const user = true;
-    if (!user) {
+    if (!isAuth) {
         // user is not authenticated
         return <Navigate to="/login"/>;
     }

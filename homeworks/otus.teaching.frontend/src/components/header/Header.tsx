@@ -4,21 +4,15 @@ import login from '../../../assets/login.svg';
 import logout from '../../../assets/logout.svg';
 import register from '../../../assets/register.svg';
 import {useNavigate} from "react-router";
+import {useAppSelector} from "../../hooks/reducs";
 
 const Header: React.FC = () => {
-    const [isAuth, _] = useState(true);
+
 
     const  navigate = useNavigate();
-
+    const isAuth = useAppSelector((state) => state.auth.isAuthenticated)
     return (
         <header className="siteHeader">
-            {/*<img*/}
-            {/*  alt="game play"*/}
-            {/*  className="btn-go-to-game"*/}
-            {/*  src={tetris.toString()}*/}
-            {/*  onClick={tetrisRoute}*/}
-            {/*  data-testid="btn-go-to-game"*/}
-            {/*/>*/}
 
             <div className="sign" data-testid="welcome-label">
                 <span className="fast-flicker">Otus </span>
@@ -26,7 +20,7 @@ const Header: React.FC = () => {
                 <span className="fast-flicker"> Frontend</span>
             </div>
 
-            {/*{isAuth && <p className="user-name-label"> Player: {userName}</p>}*/}
+
 
             <div className="Footer-Toolbar">
 
@@ -50,7 +44,7 @@ const Header: React.FC = () => {
                 />
 
             )}
-            {isAuth && (
+            {!isAuth && (
 
 
                 <img
@@ -62,7 +56,7 @@ const Header: React.FC = () => {
                 />
 
             )}
-            {isAuth && (
+            {!isAuth && (
 
 
                 <img

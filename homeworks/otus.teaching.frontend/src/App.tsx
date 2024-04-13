@@ -1,21 +1,20 @@
-import LoginForm from "./components/Auth/login/LoginForm";
+
 import React from "react";
-import {Route, Routes} from "react-router";
+import './App.scss';
 import {BrowserRouter} from "react-router-dom";
 import {AppRouter} from "./components/appRouter/AppRouter";
 import Header from "./components/header/Header";
+import {store} from "./store/store";
+import {Provider} from "react-redux";
+import './App.scss';
 
 export default function App() {
-  return (
-    // <main>
-    //   <p>Otus Simple  Frontend</p>
-    //   <Logout />
-    // </main>
-    <BrowserRouter>
-        <Header/>
-        <AppRouter />
-
-    </BrowserRouter>
-
-  );
+    return (
+         <Provider store={store}>
+            <BrowserRouter>
+                <Header/>
+                <AppRouter/>
+            </BrowserRouter>
+        </Provider>
+    );
 }

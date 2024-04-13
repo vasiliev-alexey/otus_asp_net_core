@@ -3,9 +3,12 @@ import authService from "../../../api/authService";
 import "./Logout.scss";
 import {useNavigate} from "react-router";
 import {NavLink} from "react-router-dom";
+import {useAppDispatch} from "../../../hooks/reducs";
+import {logout} from "../../../store/authSlice";
 
-const Logout = () => {
-
+export const Logout = () => {
+    const dispatch = useAppDispatch()
+    dispatch(logout())
     return (
         <div className="container">
 
@@ -22,4 +25,3 @@ const Logout = () => {
     );
 };
 
-export default Logout;

@@ -1,7 +1,15 @@
-import React, {useMemo, useState} from 'react';
+import React, { useState} from 'react';
 import authService from "../../../api/authService";
 import "./LoginForm.scss";
 import {useNavigate} from "react-router";
+
+import {
+    loginWithEmailAndPassword
+
+} from '../../../store/authSlice';
+
+
+import { useAppSelector, useAppDispatch } from '../../../hooks/reducs'
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
@@ -9,10 +17,19 @@ const LoginForm = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
 
+
+
+    const dispatch = useAppDispatch()
+
+
     const handleLogin = async () => {
 
         if (username && password) {
+
+            dispatch(loginWithEmailAndPassword({ username, password }));
             setLoggedIn(false);
+
+
             const res = await authService.LoginUser(username, password);
             if (res.isLoggedIn) {
                 setLoggedIn(true);
