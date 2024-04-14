@@ -1,15 +1,15 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React from 'react';
 import "./Header.scss";
-import login from '../../../assets/login.svg';
-import logout from '../../../assets/logout.svg';
-import register from '../../../assets/register.svg';
+import login from '@assets/login.svg';
+import logout from '@assets/logout.svg';
+import register from '@assets/register.svg';
 import {useNavigate} from "react-router";
-import {useAppSelector} from "../../hooks/reducs";
+import {useAppSelector} from "@hooks/reducs";
 
-const Header: React.FC = () => {
+const Header = () => {
 
 
-    const  navigate = useNavigate();
+    const navigate = useNavigate();
     const isAuth = useAppSelector((state) => state.auth.isAuthenticated)
     return (
         <header className="siteHeader">
@@ -19,7 +19,6 @@ const Header: React.FC = () => {
                 <span className="flicker"> Simple </span>
                 <span className="fast-flicker"> Frontend</span>
             </div>
-
 
 
             <div className="Footer-Toolbar">
@@ -40,7 +39,7 @@ const Header: React.FC = () => {
                     data-testid="btn-login-form"
                     className="octoCatLogo"
                     src={logout.toString()}
-                    onClick={ () => navigate('/logout')}
+                    onClick={() => navigate('/logout')}
                 />
 
             )}
@@ -52,7 +51,7 @@ const Header: React.FC = () => {
                     data-testid="btn-login-form"
                     className="octoCatLogo"
                     src={register.toString()}
-                    onClick={ () => navigate('/register')}
+                    onClick={() => navigate('/register')}
                 />
 
             )}
@@ -64,7 +63,7 @@ const Header: React.FC = () => {
                     data-testid="btn-login-form"
                     className="octoCatLogo"
                     src={login.toString()}
-                     onClick={ () => navigate('/login')}
+                    onClick={() => navigate('/login')}
                 />
 
             )}

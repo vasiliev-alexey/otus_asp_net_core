@@ -1,41 +1,40 @@
-import React, {useMemo, useState} from 'react';
-import authService from "../../../api/authService";
-import "./RegisterForm.scss";
+import React, {useState} from 'react';
+import authService from "@api/authService";
+import "./LoginForm.scss";
 import {useNavigate} from "react-router";
 
-export const RegisterForm = () => {
+import {loginWithEmailAndPassword} from '@store/authSlice';
+
+
+import {useAppDispatch} from '@hooks/reducs'
+
+const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordConf, setPasswordConf] = useState('');
-    const [loggedIn, setRegisterIn] = useState(false);
-
+    const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
 
-    const handleRegister = async () => {
 
-        if (passwordConf !== password) {
-            alert('Passwords do not match!');
-
-            return;
-        }
-
-        if (username && password && password === passwordConf) {
-         //   setRegisterIn(false);
+    const dispatch = useAppDispatch()
 
 
+    const handleLogin = async () => {
 
-            const res = await authService.RegisterUser(username, password);
-        console.log( "isRegistered", res , res.IsRegistered);
-            if (res.IsRegistered) {
-                alert('Register in successfully!');
-                navigate('/login');
-                // setRegisterIn(true);
+        if (username && password) {
+
+            dispatch(loginWithEmailAndPassword({username, password}));
+            setLoggedIn(false);
+
+
+            const res = await authService.LoginUser(username, password);
+            if (res.isLoggedIn) {
+                setLoggedIn(true);
+                navigate('/');
             } else {
                 alert('Login failed!');
-                setRegisterIn(false);
+                setLoggedIn(false);
                 setUsername(res.userName ?? '');
                 setPassword(res.userID ?? '');
-                setPasswordConf(res.userID ?? '');
             }
 
         } else {
@@ -46,7 +45,7 @@ export const RegisterForm = () => {
     const handleLogout = async () => {
 
         await authService.logout();
-        setRegisterIn(false);
+        setLoggedIn(false);
         setUsername('');
         setPassword('');
     };
@@ -72,21 +71,14 @@ export const RegisterForm = () => {
                                value={password}
                                onChange={(e) => setPassword(e.target.value)}/>
                     </div>
-
                     <div className="input-group">
-                        <label className="input-group__label" htmlFor="userPassInput">Повторите Пароль</label>
-                        <input type="password" id="userPassInput" className="input-group__input"
-                               value={passwordConf}
-                               onChange={(e) => setPasswordConf(e.target.value)}/>
+                        <button type="submit" className="login_btn" onClick={handleLogin}>Войти</button>
                     </div>
-
-                    <div className="input-group">
-                        <button type="submit" className="login_btn" onClick={handleRegister}>Зарегистрироваться</button>
-                    </div>
-
+                    {/*<input*/}
                 </div>
             )}
         </div>
     );
 };
 
+export default LoginForm;

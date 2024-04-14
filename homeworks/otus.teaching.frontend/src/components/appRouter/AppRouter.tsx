@@ -1,25 +1,28 @@
-import {BrowserRouter} from "react-router-dom";
 import {Navigate, Route, Routes} from "react-router";
-import LoginForm from "../Auth/login/LoginForm";
+import LoginForm from "@pages/auth/login/LoginForm";
 import React from "react";
-import {RegisterForm} from "../Auth/register/RegisterForm";
-import {HomePage} from "../home/HomePage";
-import {Logout} from "../Auth/logout/Logout";
-import {useAppSelector} from "../../hooks/reducs";
+import {RegisterForm} from "@pages/auth/register/RegisterForm";
+import {HomePage} from "@pages/home/HomePage";
+import {Logout} from "@pages/auth/logout/Logout";
+import {useAppSelector} from "@hooks/reducs";
+import {NotFound} from "@pages/notfound/NotFound";
+import {AdminPage} from "@pages/admin/AdminPage";
 
 
-export const AppRouter: React.FC = () => {
+export const AppRouter = () => {
     return (
 
         <Routes>
-            <Route path="*" element={
-                <ProtectedRoute>
-                    <HomePage/>
-                </ProtectedRoute>
-            }></Route>
+            <Route path="/admin" element={<ProtectedRoute>
+                <AdminPage/>
+            </ProtectedRoute>}/>
             <Route path="/login" element={<LoginForm/>}/>
             <Route path="/register" element={<RegisterForm/>}/>
             <Route path="/logout" element={<Logout/>}/>
+            <Route path="/" element={
+                <HomePage/>
+            }></Route>
+            <Route path="*" element={<NotFound/>}/>
         </Routes>
 
     );
@@ -29,7 +32,6 @@ export const AppRouter: React.FC = () => {
 // @ts-ignore
 const ProtectedRoute = ({children}) => {
     const isAuth = useAppSelector((state) => state.auth.isAuthenticated)
-    const user = true;
     if (!isAuth) {
         // user is not authenticated
         return <Navigate to="/login"/>;

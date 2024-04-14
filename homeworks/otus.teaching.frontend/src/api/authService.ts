@@ -27,7 +27,7 @@ class AuthService {
 
             return {isLoggedIn: false, userID: "", userName: ""};
         } catch (e: any) {
-            return {isLoggedIn: false , userID: "", userName: ""};
+            return {isLoggedIn: false, userID: "", userName: ""};
         }
     };
 
@@ -35,7 +35,7 @@ class AuthService {
     RegisterUser = async (
         username: string,
         password: string
-    ): Promise<{ isRegistered: boolean }  | any> => {
+    ): Promise<{ isRegistered: boolean } | any> => {
         try {
             const response = await axios.post(
                 `${this.authHost}/register`,
@@ -49,7 +49,7 @@ class AuthService {
             );
             console.log("response", response.data);
             return response.data;
-        } catch (e : any) {
+        } catch (e: any) {
             if (e.response.status === 401) {
                 throw e.response.data;
             }

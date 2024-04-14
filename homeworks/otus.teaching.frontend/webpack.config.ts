@@ -48,6 +48,14 @@ const config: Configuration = {
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
+        alias: {
+            "@pages": path.resolve(__dirname, "src/pages"),
+            "@hooks": path.resolve(__dirname, "src/hooks"),
+            "@store": path.resolve(__dirname, "src/store"),
+            "@ui": path.resolve(__dirname, "src/components"),
+            "@api": path.resolve(__dirname, "src/api"),
+            "@assets": path.resolve(__dirname, "assets/"),
+        }
     },
     output: {
         filename: "bundle.js",
