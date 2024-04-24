@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
+namespace Otus.Teaching.Pcf.ReceivingFromPartner.Core.Domain
 {
     public class Partner
         : BaseEntity
@@ -12,6 +12,8 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 
         public bool IsActive { get; set; }
 
-        public virtual ICollection<PartnerPromoCodeLimit> PartnerLimits { get; set; } = new List<PartnerPromoCodeLimit>();
+        public virtual ICollection<PartnerPromoCodeLimit> PartnerLimits { get; set; }
+        
+        public virtual ICollection<PromoCode> PromoCodes { get; set; }
     }
 }
