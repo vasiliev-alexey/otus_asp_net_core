@@ -1,0 +1,12 @@
+/coverage/*
+!.eslintrc.js
+/dist/*
+webpack.config.ts
+
+/jest
+
+**/dist/
+
+packages/game-engine/lib/*
+
+**/storybook-static/
