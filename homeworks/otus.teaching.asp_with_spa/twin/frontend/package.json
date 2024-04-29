@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "dev": " webpack-dev-server --config webpack.config.ts",
-    "build": "webpack",
-    "backend": "ts-node-dev --respawn --transpile-only src/server/simple_server.ts"
+    "build": "webpack"
   },
   "dependencies": {
     "axios": "^1.6.8",

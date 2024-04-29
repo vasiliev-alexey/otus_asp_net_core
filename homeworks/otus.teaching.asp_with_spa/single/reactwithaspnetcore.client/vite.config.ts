@@ -6,6 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import child_process from 'child_process';
 
+const target =  process.env.BACKEND_API_URL ||  "http://localhost:7001";
+
 const baseFolder =
     process.env.APPDATA !== undefined && process.env.APPDATA !== ''
         ? `${process.env.APPDATA}/ASP.NET/https`
@@ -39,6 +41,9 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [plugin()],
+    build: {
+        outDir: '../ReactWithAspNetCore.Server/wwwroot',
+    },
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -47,11 +52,11 @@ export default defineConfig({
     server: {
         proxy: {
             '^/weatherforecast': {
-                target: 'http://localhost:5202/',
+                target,
                 secure: false
             }
         },
-        port: 5203,
+        port: 5173,
         https: {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),

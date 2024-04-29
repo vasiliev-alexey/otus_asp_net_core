@@ -29,4 +29,18 @@ app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
 
-app.Run();
+using IHost host = Host.CreateApplicationBuilder(args).Build();
+
+IConfigurationRoot config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+var port = config["ApiPort"] ?? "7001";
+
+// app.UseSpa(spa =>
+// {
+//     spa.Options.SourcePath = "wwwroot";
+// });
+
+app.Run($"http://*:{port}");
