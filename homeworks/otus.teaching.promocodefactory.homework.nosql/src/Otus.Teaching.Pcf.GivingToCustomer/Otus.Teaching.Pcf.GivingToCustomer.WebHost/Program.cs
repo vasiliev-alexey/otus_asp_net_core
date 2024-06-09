@@ -1,23 +1,66 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
+using Otus.Teaching.Pcf.GivingToCustomer.Core.Abstractions.Gateways;
+using Otus.Teaching.Pcf.GivingToCustomer.Core.Abstractions.Repositories;
+using Otus.Teaching.Pcf.GivingToCustomer.Core.Domain;
+using Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Data;
+using Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Repositories;
+using Otus.Teaching.Pcf.GivingToCustomer.Integration;
 
-namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
+var builder = WebApplication.CreateBuilder(args);
+
+var configuration = builder.Configuration;
+
+// Configure services
+builder.Services.AddControllers().AddMvcOptions(x => x.SuppressAsyncSuffixInActionNames = false);
+builder.Services.AddSingleton<IMongoClient>(
+    new MongoClient(configuration.GetConnectionString("PromocodeFactoryGivingToCustomerDb")));
+builder.Services.AddSingleton(serviceProvider =>
+    serviceProvider.GetRequiredService<IMongoClient>().GetDatabase("promocode_factory_givingToCustomer_db"));
+builder.Services.AddSingleton(serviceProvider =>
+    serviceProvider.GetRequiredService<IMongoDatabase>().GetCollection<Preference>("Preferences"));
+builder.Services.AddSingleton(serviceProvider =>
+    serviceProvider.GetRequiredService<IMongoDatabase>().GetCollection<Customer>("Customers"));
+builder.Services.AddSingleton(serviceProvider =>
+    serviceProvider.GetRequiredService<IMongoDatabase>().GetCollection<PromoCode>("PromoCodes"));
+builder.Services.AddScoped(serviceProvider =>
+    serviceProvider.GetRequiredService<IMongoClient>().StartSession());
+builder.Services.AddScoped(typeof(IRepository<>), typeof(MongoDbRepository<>));
+builder.Services.AddScoped<INotificationGateway, NotificationGateway>();
+builder.Services.AddScoped<IDbInitializer, MongoDbInitializer>();
+
+builder.Services.AddOpenApiDocument(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    options.Title = "PromoCode Factory Giving To Customer API Doc";
+    options.Version = "1.0";
+});
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-    }
+var app = builder.Build();
+
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
+else
+    app.UseHsts();
+
+app.UseOpenApi();
+app.UseSwaggerUi(settings => settings.DocExpansion = "list");
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.MapControllerRoute(
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInitializer.InitializeDb();
 }
+
+app.Run();

@@ -8,116 +8,113 @@ using Otus.Teaching.Pcf.GivingToCustomer.Core.Domain;
 using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Mappers;
 using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Models;
 
-namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers
+namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers;
+
+/// <summary>
+///     Клиенты
+/// </summary>
+[ApiController]
+[Route("api/v1/[controller]")]
+public class CustomersController(
+    IRepository<Customer> customerRepository,
+    IRepository<Preference> preferenceRepository)
+    : ControllerBase
 {
     /// <summary>
-    /// Клиенты
+    ///     Получить список клиентов
     /// </summary>
-    [ApiController]
-    [Route("api/v1/[controller]")]
-    public class CustomersController
-        : ControllerBase
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<ActionResult<List<CustomerShortResponse>>> GetCustomersAsync()
     {
-        private readonly IRepository<Customer> _customerRepository;
-        private readonly IRepository<Preference> _preferenceRepository;
+        var customers = await customerRepository.GetAllAsync();
 
-        public CustomersController(IRepository<Customer> customerRepository, 
-            IRepository<Preference> preferenceRepository)
+        var response = customers.Select(x => new CustomerShortResponse
         {
-            _customerRepository = customerRepository;
-            _preferenceRepository = preferenceRepository;
-        }
-        
-        /// <summary>
-        /// Получить список клиентов
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult<List<CustomerShortResponse>>> GetCustomersAsync()
-        {
-            var customers =  await _customerRepository.GetAllAsync();
+            Id = x.Id,
+            Email = x.Email,
+            FirstName = x.FirstName,
+            LastName = x.LastName
+        }).ToList();
 
-            var response = customers.Select(x => new CustomerShortResponse()
-            {
-                Id = x.Id,
-                Email = x.Email,
-                FirstName = x.FirstName,
-                LastName = x.LastName
-            }).ToList();
+        return Ok(response);
+    }
 
-            return Ok(response);
-        }
-        
-        /// <summary>
-        /// Получить клиента по id
-        /// </summary>
-        /// <param name="id">Id клиента, например <example>a6c8c6b1-4349-45b0-ab31-244740aaf0f0</example></param>
-        /// <returns></returns>
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
-        {
-            var customer =  await _customerRepository.GetByIdAsync(id);
+    /// <summary>
+    ///     Получить клиента по id
+    /// </summary>
+    /// <param name="id">Id клиента, например
+    ///     <example>a6c8c6b1-4349-45b0-ab31-244740aaf0f0</example>
+    /// </param>
+    /// <returns></returns>
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
+    {
+        var customer = await customerRepository.GetByIdAsync(id);
 
-            var response = new CustomerResponse(customer);
+        var response = new CustomerResponse(customer);
 
-            return Ok(response);
-        }
-        
-        /// <summary>
-        /// Создать нового клиента
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult<CustomerResponse>> CreateCustomerAsync(CreateOrEditCustomerRequest request)
-        {
-            //Получаем предпочтения из бд и сохраняем большой объект
-            var preferences = await _preferenceRepository
-                .GetRangeByIdsAsync(request.PreferenceIds);
+        return Ok(response);
+    }
 
-            Customer customer = CustomerMapper.MapFromModel(request, preferences);
-            
-            await _customerRepository.AddAsync(customer);
+    /// <summary>
+    ///     Создать нового клиента
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<ActionResult<CustomerResponse>> CreateCustomerAsync(CreateOrEditCustomerRequest request)
+    {
+        //Получаем предпочтения из бд и сохраняем большой объект
+        var preferences = await preferenceRepository
+            .GetRangeByIdsAsync(request.PreferenceIds);
 
-            return CreatedAtAction(nameof(GetCustomerAsync), new {id = customer.Id}, customer.Id);
-        }
-        
-        /// <summary>
-        /// Обновить клиента
-        /// </summary>
-        /// <param name="id">Id клиента, например <example>a6c8c6b1-4349-45b0-ab31-244740aaf0f0</example></param>
-        /// <param name="request">Данные запроса></param>
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request)
-        {
-            var customer = await _customerRepository.GetByIdAsync(id);
-            
-            if (customer == null)
-                return NotFound();
-            
-            var preferences = await _preferenceRepository.GetRangeByIdsAsync(request.PreferenceIds);
-            
-            CustomerMapper.MapFromModel(request, preferences, customer);
+        var customer = CustomerMapper.MapFromModel(request, preferences);
 
-            await _customerRepository.UpdateAsync(customer);
+        await customerRepository.AddAsync(customer);
 
-            return NoContent();
-        }
-        
-        /// <summary>
-        /// Удалить клиента
-        /// </summary>
-        /// <param name="id">Id клиента, например <example>a6c8c6b1-4349-45b0-ab31-244740aaf0f0</example></param>
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteCustomerAsync(Guid id)
-        {
-            var customer = await _customerRepository.GetByIdAsync(id);
-            
-            if (customer == null)
-                return NotFound();
+        return CreatedAtAction("GetCustomerAsync", new { id = customer.Id }, customer.Id);
+    }
 
-            await _customerRepository.DeleteAsync(customer);
+    /// <summary>
+    ///     Обновить клиента
+    /// </summary>
+    /// <param name="id">Id клиента, например
+    ///     <example>a6c8c6b1-4349-45b0-ab31-244740aaf0f0</example>
+    /// </param>
+    /// <param name="request">Данные запроса></param>
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request)
+    {
+        var customer = await customerRepository.GetByIdAsync(id);
 
-            return NoContent();
-        }
+        if (customer == null)
+            return NotFound();
+
+        var preferences = await preferenceRepository.GetRangeByIdsAsync(request.PreferenceIds);
+
+        CustomerMapper.MapFromModel(request, preferences, customer);
+
+        await customerRepository.UpdateAsync(customer);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Удалить клиента
+    /// </summary>
+    /// <param name="id">Id клиента, например
+    ///     <example>a6c8c6b1-4349-45b0-ab31-244740aaf0f0</example>
+    /// </param>
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteCustomerAsync(Guid id)
+    {
+        var customer = await customerRepository.GetByIdAsync(id);
+
+        if (customer == null)
+            return NotFound();
+
+        await customerRepository.DeleteAsync(customer);
+
+        return NoContent();
     }
 }

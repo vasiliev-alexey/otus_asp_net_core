@@ -2,9 +2,9 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Gateways;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Repositories;
 using Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess;
@@ -17,37 +17,35 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-        
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddMvcOptions(x=> 
+            services.AddControllers().AddMvcOptions(x =>
                 x.SuppressAsyncSuffixInActionNames = false);
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<INotificationGateway, NotificationGateway>();
             services.AddScoped<IDbInitializer, EfDbInitializer>();
 
-            services.AddHttpClient<IGivingPromoCodeToCustomerGateway,GivingPromoCodeToCustomerGateway>(c =>
+            services.AddHttpClient<IGivingPromoCodeToCustomerGateway, GivingPromoCodeToCustomerGateway>(c =>
             {
                 c.BaseAddress = new Uri(Configuration["IntegrationSettings:GivingToCustomerApiUrl"]);
             });
-            
-            services.AddHttpClient<IAdministrationGateway,AdministrationGateway>(c =>
+
+            services.AddHttpClient<IAdministrationGateway, AdministrationGateway>(c =>
             {
                 c.BaseAddress = new Uri(Configuration["IntegrationSettings:AdministrationApiUrl"]);
             });
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             services.AddDbContext<DataContext>(x =>
             {
-               
                 //x.UseSqlite("Filename=PromocodeFactoryReceivingFromPartnerDb.sqlite");
                 x.UseNpgsql(Configuration.GetConnectionString("PromocodeFactoryReceivingFromPartnerDb"));
                 x.UseSnakeCaseNamingConvention();
@@ -65,29 +63,19 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseHsts();
-            }
 
             app.UseOpenApi();
-            app.UseSwaggerUi(x =>
-            {
-                x.DocExpansion = "list";
-            });
-            
+            app.UseSwaggerUi3(x => { x.DocExpansion = "list"; });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-            
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
             dbInitializer.InitializeDb();
         }
     }

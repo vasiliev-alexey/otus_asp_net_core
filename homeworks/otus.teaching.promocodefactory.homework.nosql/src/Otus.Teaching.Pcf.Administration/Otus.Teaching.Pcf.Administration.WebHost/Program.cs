@@ -1,23 +1,56 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
+using Otus.Teaching.Pcf.Administration.Core.Abstractions.Repositories;
+using Otus.Teaching.Pcf.Administration.Core.Domain.Administration;
+using Otus.Teaching.Pcf.Administration.DataAccess.Data;
+using Otus.Teaching.Pcf.Administration.DataAccess.Repositories;
+using Otus.Teaching.Pcf.Administration.WebHost.Helpers;
 
-namespace Otus.Teaching.Pcf.Administration.WebHost
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers().AddMvcOptions(x =>
+    x.SuppressAsyncSuffixInActionNames = false);
+builder.Services.AddSingleton<IMongoClient>(
+        new MongoClient(builder.Configuration.GetConnectionString("PromocodeFactoryAdministrationDb"))).AddSingleton(
+        serviceProvider =>
+            serviceProvider.GetRequiredService<IMongoClient>()
+                .GetDatabase("promocode_factory_administration_db"))
+    .AddSingleton(serviceProvider =>
+        serviceProvider.GetRequiredService<IMongoDatabase>()
+            .GetCollection<Employee>("Employees"))
+    .AddSingleton(serviceProvider =>
+        serviceProvider.GetRequiredService<IMongoDatabase>()
+            .GetCollection<Role>("Roles"))
+    .AddScoped(serviceProvider =>
+        serviceProvider.GetRequiredService<IMongoClient>()
+            .StartSession());
+builder.Services.AddScoped<IDbInitializer, MongoDbInitializer>();
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(MongoDbRepository<>));
+
+builder.Services.AddOpenApiDocument(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    options.Title = "PromoCode Factory Administration API Doc";
+    options.Version = "1.0";
+});
+var app = builder.Build();
+if (app.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
+else
+    app.UseHsts();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-    }
-}
+app.UseOpenApi();
+app.UseSwaggerUi(x => { x.DocExpansion = "list"; });
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.MapControllerRoute(
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
+
+app.InitializeDatabase();
+app.Run();

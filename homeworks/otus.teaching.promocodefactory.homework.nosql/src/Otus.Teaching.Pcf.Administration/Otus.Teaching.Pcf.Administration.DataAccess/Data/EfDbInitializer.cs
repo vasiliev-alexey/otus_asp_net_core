@@ -1,24 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿namespace Otus.Teaching.Pcf.Administration.DataAccess.Data;
 
-namespace Otus.Teaching.Pcf.Administration.DataAccess.Data
+public class EfDbInitializer(DataContext dataContext) : IDbInitializer
 {
-    public class EfDbInitializer
-        : IDbInitializer
+    public void InitializeDb()
     {
-        private readonly DataContext _dataContext;
+        dataContext.Database.EnsureDeleted();
+        dataContext.Database.EnsureCreated();
 
-        public EfDbInitializer(DataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
-        
-        public void InitializeDb()
-        {
-            _dataContext.Database.EnsureDeleted();
-            _dataContext.Database.EnsureCreated();
-            
-            _dataContext.AddRange(FakeDataFactory.Employees);
-            _dataContext.SaveChanges();
-        }
+        dataContext.AddRange(FakeDataFactory.Employees);
+        dataContext.SaveChanges();
     }
 }
