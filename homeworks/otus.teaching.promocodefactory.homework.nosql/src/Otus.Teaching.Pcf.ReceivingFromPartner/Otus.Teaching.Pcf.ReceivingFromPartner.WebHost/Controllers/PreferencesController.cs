@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ using Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Models;
 namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Controllers
 {
     /// <summary>
-    /// Предпочтения клиентов
+    ///     Предпочтения клиентов
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
@@ -23,9 +22,9 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Controllers
         {
             _preferencesRepository = preferencesRepository;
         }
-        
+
         /// <summary>
-        /// Получить список предпочтений
+        ///     Получить список предпочтений
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -33,7 +32,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Controllers
         {
             var preferences = await _preferencesRepository.GetAllAsync();
 
-            var response = preferences.Select(x => new PreferenceResponse()
+            var response = preferences.Select(x => new PreferenceResponse
             {
                 Id = x.Id,
                 Name = x.Name

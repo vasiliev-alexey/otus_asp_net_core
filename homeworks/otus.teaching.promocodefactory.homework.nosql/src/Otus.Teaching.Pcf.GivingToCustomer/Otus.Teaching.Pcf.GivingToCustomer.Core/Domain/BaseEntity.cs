@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace Otus.Teaching.Pcf.GivingToCustomer.Core.Domain
+namespace Otus.Teaching.Pcf.GivingToCustomer.Core.Domain;
+
+public class BaseEntity
 {
-    public class BaseEntity
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }

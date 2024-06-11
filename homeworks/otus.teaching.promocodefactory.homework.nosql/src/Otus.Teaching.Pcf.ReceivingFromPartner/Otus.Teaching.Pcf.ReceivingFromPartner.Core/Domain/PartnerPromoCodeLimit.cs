@@ -2,7 +2,7 @@
 
 namespace Otus.Teaching.Pcf.ReceivingFromPartner.Core.Domain
 {
-    public class 
+    public class
         PartnerPromoCodeLimit
     {
         public Guid Id { get; set; }
@@ -10,7 +10,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.Core.Domain
         public Guid PartnerId { get; set; }
 
         public virtual Partner Partner { get; set; }
-        
+
         public DateTime CreateDate { get; set; }
 
         public DateTime? CancelDate { get; set; }
