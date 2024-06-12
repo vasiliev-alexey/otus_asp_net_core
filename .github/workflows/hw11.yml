@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           file: ${{env.working-directory}}/Dockerfile		
-          context: .
+          context:  ${{env.working-directory}}
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:latest
 
