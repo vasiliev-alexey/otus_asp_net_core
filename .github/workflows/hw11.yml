@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - hw11
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -49,6 +51,8 @@ jobs:
           context:  ${{env.working-directory}}
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:${{ github.ref_name }}
+
 
       - name: Logout from Docker Hub
         run: docker logout
