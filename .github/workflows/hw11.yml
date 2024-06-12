@@ -22,12 +22,16 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: ${{env.working-directory}}
+
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
+        working-directory: ${{env.working-directory}}
 
       - name: Publish
         run: dotnet publish --no-build --configuration Release --output ./publish
+        working-directory: ${{env.working-directory}}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
