@@ -50,9 +50,7 @@ jobs:
           file: ${{env.working-directory}}/Dockerfile		
           context:  ${{env.working-directory}}
           push: true
-          tags: |
-	          ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:latest
-            ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:${{ github.ref_name }}
+          tags:    ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:latest ,   ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:${{ github.ref_name }}
 
 
       - name: Logout from Docker Hub
