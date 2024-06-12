@@ -2,10 +2,14 @@ name: ASP.NET Core CI/CD
 
 on:
   push:
-    branches:
-      - hw11
+#    branches:
+#      - hw11
+#    tags:
+#      - 'v*.*.*'
+  create:
     tags:
       - 'v*.*.*'
+
 
 jobs:
   build:
