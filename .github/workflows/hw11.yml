@@ -1,7 +1,7 @@
 name: ASP.NET Core CI/CD
 
 on:
-  push:
+#  push:
 #    branches:
 #      - hw11
 #    tags:
