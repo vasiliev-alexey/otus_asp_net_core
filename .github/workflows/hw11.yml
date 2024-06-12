@@ -51,7 +51,7 @@ jobs:
           context:  ${{env.working-directory}}
           push: true
           tags: |
-	    ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:latest
+	          ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:latest
             ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:${{ github.ref_name }}
 
 
