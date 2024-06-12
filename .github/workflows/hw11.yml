@@ -45,6 +45,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
+          file: ${{env.working-directory}}/Dockerfile		
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/promocode-factory-api:latest
