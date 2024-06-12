@@ -1,2 +1,6 @@
 otus.teaching.frontend/
 otus.teaching.monolith2microservices/
+
+**/bin/*
+**/obj/*
+**/.idea/*
