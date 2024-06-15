@@ -1,30 +1,21 @@
 ﻿using Otus.Teaching.Pcf.Administration.DataAccess;
 using Otus.Teaching.Pcf.Administration.DataAccess.Data;
 
-namespace Otus.Teaching.Pcf.Administration.IntegrationTests.Data
+namespace Otus.Teaching.Pcf.Administration.IntegrationTests.Data;
+
+public class EfTestDbInitializer(DataContext dataContext) : IDbInitializer
 {
-    public class EfTestDbInitializer
-        : IDbInitializer
+    public void InitializeDb()
     {
-        private readonly DataContext _dataContext;
+        dataContext.Database.EnsureDeleted();
+        dataContext.Database.EnsureCreated();
 
-        public EfTestDbInitializer(DataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
-        
-        public void InitializeDb()
-        {
-            _dataContext.Database.EnsureDeleted();
-            _dataContext.Database.EnsureCreated();
-            
-            _dataContext.AddRange(TestDataFactory.Employees);
-            _dataContext.SaveChanges();
-        }
+        dataContext.AddRange(TestDataFactory.Employees);
+        dataContext.SaveChanges();
+    }
 
-        public void CleanDb()
-        {
-            _dataContext.Database.EnsureDeleted();
-        }
+    public void CleanDb()
+    {
+        dataContext.Database.EnsureDeleted();
     }
 }

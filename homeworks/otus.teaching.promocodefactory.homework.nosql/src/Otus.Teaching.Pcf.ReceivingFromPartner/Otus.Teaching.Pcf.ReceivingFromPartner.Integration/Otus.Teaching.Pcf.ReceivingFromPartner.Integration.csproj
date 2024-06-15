@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <LangVersion>12</LangVersion>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Otus.Teaching.Pcf.ReceivingFromPartner.Core\Otus.Teaching.Pcf.ReceivingFromPartner.Core.csproj" />
+        <ProjectReference Include="..\Otus.Teaching.Pcf.ReceivingFromPartner.Core\Otus.Teaching.Pcf.ReceivingFromPartner.Core.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7"/>
     </ItemGroup>
 
 </Project>

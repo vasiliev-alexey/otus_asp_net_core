@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Data
+﻿namespace Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Data
 {
     public class EfDbInitializer
         : IDbInitializer
@@ -11,7 +9,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Data
         {
             _dataContext = dataContext;
         }
-        
+
         public void InitializeDb()
         {
             _dataContext.Database.EnsureDeleted();
@@ -19,7 +17,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Data
 
             _dataContext.AddRange(FakeDataFactory.Preferences);
             _dataContext.SaveChanges();
-            
+
             _dataContext.AddRange(FakeDataFactory.Partners);
             _dataContext.SaveChanges();
         }
