@@ -45,6 +45,10 @@ services:
       - 5434:5432
     environment: 
       - POSTGRES_PASSWORD=docker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
   
   # GivingToCustomer Api
   promocode-factory-giving-to-customer-api:
@@ -67,3 +71,21 @@ services:
       - 5435:5432
     environment: 
       - POSTGRES_PASSWORD=docker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+ 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # для подключения клиентов RabbitMQ
+      - "15672:15672"  # для подключения к веб-интерфейсу управления
+    environment:
+      RABBITMQ_DEFAULT_USER: user  # замените на ваше имя пользователя
+      RABBITMQ_DEFAULT_PASS: password  # замените на ваш пароль
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq_data:
+  postgres_data:

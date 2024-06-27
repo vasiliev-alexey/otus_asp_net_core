@@ -7,17 +7,20 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Gateways;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Repositories;
+using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Services;
 using Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess;
 using Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Data;
 using Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Repositories;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Integration;
+using Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Options;
+using Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Services;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -28,22 +31,24 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<BusConnectOptions>(Configuration.GetSection(nameof(BusConnectOptions)));
             services.AddControllers().AddMvcOptions(x=> 
                 x.SuppressAsyncSuffixInActionNames = false);
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<INotificationGateway, NotificationGateway>();
             services.AddScoped<IDbInitializer, EfDbInitializer>();
-
-            services.AddHttpClient<IGivingPromoCodeToCustomerGateway,GivingPromoCodeToCustomerGateway>(c =>
-            {
-                c.BaseAddress = new Uri(Configuration["IntegrationSettings:GivingToCustomerApiUrl"]);
-            });
+            services.AddTransient<IMessageService, MessageService>();
             
-            services.AddHttpClient<IAdministrationGateway,AdministrationGateway>(c =>
-            {
-                c.BaseAddress = new Uri(Configuration["IntegrationSettings:AdministrationApiUrl"]);
-            });
-            
+            // services.AddHttpClient<IGivingPromoCodeToCustomerGateway,GivingPromoCodeToCustomerGateway>(c =>
+            // {
+            //     c.BaseAddress = new Uri(Configuration["IntegrationSettings:GivingToCustomerApiUrl"]);
+            // });
+            //
+            // services.AddHttpClient<IAdministrationGateway,AdministrationGateway>(c =>
+            // {
+            //     c.BaseAddress = new Uri(Configuration["IntegrationSettings:AdministrationApiUrl"]);
+            // });
+            //
             services.AddDbContext<DataContext>(x =>
             {
                 //x.UseSqlite("Filename=PromocodeFactoryReceivingFromPartnerDb.sqlite");

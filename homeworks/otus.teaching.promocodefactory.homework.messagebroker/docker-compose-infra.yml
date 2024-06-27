@@ -1,0 +1,61 @@
+version: '3'
+volumes:
+  promocode-factory-administration-db-data:
+    driver: local
+  promocode-factory-receiving-from-partner-db-data:
+    driver: local
+  promocode-factory-giving-to-customer-db-data:
+    driver: local
+  promocode-factory-bus-data:
+    driver: local
+
+services:
+  #Administration Db
+  promocode-factory-administration-db:
+    image: "postgres:16-alpine"
+    container_name: 'promocode-factory-administration-db'
+    restart: always 
+    ports:
+      - 5433:5432
+    environment: 
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - promocode-factory-administration-db-data:/var/lib/postgresql/data
+
+  #ReceivingFromPartner Db
+  promocode-factory-receiving-from-partner-db:
+    image: "postgres:16-alpine"
+    container_name: 'promocode-factory-receiving-from-partner-db'
+    restart: always 
+    ports:
+      - 5434:5432
+    environment: 
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - promocode-factory-receiving-from-partner-db-data:/var/lib/postgresql/data
+  
+  #GivingToCustomer Db
+  promocode-factory-giving-to-customer-db:
+    image: "postgres:16-alpine"
+    container_name: 'promocode-factory-giving-to-customer-db'
+    restart: always 
+    ports:
+      - 5435:5432
+    environment: 
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - promocode-factory-giving-to-customer-db-data:/var/lib/postgresql/data
+
+  promocode-factory-bus:
+    container_name: promocode-factory-bus
+    image: rabbitmq:3.13-management
+    restart: always
+    ports:
+      - 5673:5672
+      - 15673:15672
+    hostname: pfc
+    environment:
+      RABBITMQ_DEFAULT_USER: rmuser
+      RABBITMQ_DEFAULT_PASS: docker
+    volumes:
+      - promocode-factory-bus-data:/var/lib/rabbitmq

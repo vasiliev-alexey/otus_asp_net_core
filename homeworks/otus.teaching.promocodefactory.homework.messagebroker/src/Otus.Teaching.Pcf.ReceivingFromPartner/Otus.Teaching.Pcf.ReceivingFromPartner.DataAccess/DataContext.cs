@@ -10,6 +10,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess
 
         public DbSet<Partner> Partners { get; set; }
 
+ 
         public DataContext()
         {
             

@@ -19,7 +19,7 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
-	
+      <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />	
     <PackageReference Include="NSwag.AspNetCore" Version="14.0.3" />   
 
 
