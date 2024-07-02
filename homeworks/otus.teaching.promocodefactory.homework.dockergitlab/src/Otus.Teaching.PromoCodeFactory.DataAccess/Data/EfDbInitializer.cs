@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
+﻿namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
     public class EfDbInitializer
         : IDbInitializer

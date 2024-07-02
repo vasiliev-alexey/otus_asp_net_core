@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
+﻿namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 {
     public class Role
         : BaseEntity
