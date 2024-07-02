@@ -1,7 +1,6 @@
-﻿namespace Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Data
+﻿namespace Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Data;
+
+public interface IDbInitializer
 {
-    public interface IDbInitializer
-    {
-        void InitializeDb();
-    }
+    void InitializeDb();
 }

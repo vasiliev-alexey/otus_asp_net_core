@@ -4,22 +4,23 @@
         <TargetFramework>net8.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
-        <LangVersion>12</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.Core\Otus.Teaching.Pcf.GivingToCustomer.Core.csproj" />
-      <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.DataAccess\Otus.Teaching.Pcf.GivingToCustomer.DataAccess.csproj" />
-      <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.Integration\Otus.Teaching.Pcf.GivingToCustomer.Integration.csproj" />
+        <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.Core\Otus.Teaching.Pcf.GivingToCustomer.Core.csproj"/>
+        <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.DataAccess\Otus.Teaching.Pcf.GivingToCustomer.DataAccess.csproj"/>
+        <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.Integration\Otus.Teaching.Pcf.GivingToCustomer.Integration.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
-      <PackageReference Include="NSwag.AspNetCore" Version="14.0.7" />
+        <PackageReference Include="EFCore.NamingConventions" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2"/>
+        <PackageReference Include="MongoDB.Driver" Version="2.24.0"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2"/>
+        <PackageReference Include="NSwag.AspNetCore" Version="14.0.3"/>
     </ItemGroup>
 
 </Project>

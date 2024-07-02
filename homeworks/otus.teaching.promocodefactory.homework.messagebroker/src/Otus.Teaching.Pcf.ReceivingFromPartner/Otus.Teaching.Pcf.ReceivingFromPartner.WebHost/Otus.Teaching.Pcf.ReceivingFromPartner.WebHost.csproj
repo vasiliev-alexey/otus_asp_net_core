@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Otus.Teaching.Pcf.ReceivingFromPartner.Core\Otus.Teaching.Pcf.ReceivingFromPartner.Core.csproj" />
+      <ProjectReference Include="..\Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess\Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.csproj" />
+      <ProjectReference Include="..\Otus.Teaching.Pcf.ReceivingFromPartner.Integration\Otus.Teaching.Pcf.ReceivingFromPartner.Integration.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+      <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />	
+    <PackageReference Include="NSwag.AspNetCore" Version="14.0.3" />   
+
+
+    </ItemGroup>
+
+</Project>

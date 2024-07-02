@@ -15,10 +15,10 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.Integration
         {
             _httpClient = httpClient;
         }
-        
+
         public async Task GivePromoCodeToCustomer(PromoCode promoCode)
         {
-            var dto = new GivePromoCodeToCustomerDto()
+            var dto = new GivePromoCodeToCustomerDto
             {
                 PartnerId = promoCode.Partner.Id,
                 BeginDate = promoCode.BeginDate.ToShortDateString(),
@@ -28,7 +28,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.Integration
                 ServiceInfo = promoCode.ServiceInfo,
                 PartnerManagerId = promoCode.PartnerManagerId
             };
-            
+
             var response = await _httpClient.PostAsJsonAsync("api/v1/promocodes", dto);
 
             response.EnsureSuccessStatusCode();

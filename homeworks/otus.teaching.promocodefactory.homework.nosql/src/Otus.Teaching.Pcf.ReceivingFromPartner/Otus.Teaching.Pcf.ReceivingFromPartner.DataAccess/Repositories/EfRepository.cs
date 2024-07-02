@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Repositories;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Domain;
 
@@ -12,7 +11,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Repositories
 {
     public class EfRepository<T>
         : IRepository<T>
-        where T: BaseEntity
+        where T : BaseEntity
     {
         private readonly DataContext _dataContext;
 
@@ -20,7 +19,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Repositories
         {
             _dataContext = dataContext;
         }
-        
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             var entities = await _dataContext.Set<T>().ToListAsync();
