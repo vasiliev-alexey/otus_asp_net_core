@@ -14,16 +14,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class EmployeesController
-        : ControllerBase
+    public class EmployeesController(IRepository<Employee> employeeRepository) : ControllerBase
     {
-        private readonly IRepository<Employee> _employeeRepository;
-
-        public EmployeesController(IRepository<Employee> employeeRepository)
-        {
-            _employeeRepository = employeeRepository;
-        }
-        
         /// <summary>
         /// Получить данные всех сотрудников
         /// </summary>
@@ -31,7 +23,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet]
         public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
         {
-            var employees = await _employeeRepository.GetAllAsync();
+            var employees = await employeeRepository.GetAllAsync();
 
             var employeesModelList = employees.Select(x => 
                 new EmployeeShortResponse()
@@ -51,7 +43,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<EmployeeResponse>> GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var employee = await employeeRepository.GetByIdAsync(id);
 
             if (employee == null)
                 return NotFound();

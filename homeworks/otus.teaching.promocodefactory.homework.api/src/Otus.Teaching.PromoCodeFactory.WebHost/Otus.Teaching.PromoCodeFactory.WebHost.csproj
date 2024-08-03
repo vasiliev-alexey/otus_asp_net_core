@@ -21,8 +21,28 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageReference Include="NSwag.AspNetCore" Version="14.0.3" />   
 
+ <PackageReference Include="Grpc.AspNetCore" Version="2.63.0-pre1" />
+      <PackageReference Include="Grpc.Tools" Version="2.64.0-pre1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+     
+
 
 
     </ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="Protos\*.proto" GrpcServices="Server" ProtoRoot="Protos\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Content Update="Protos\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	
+
+
 
 </Project>

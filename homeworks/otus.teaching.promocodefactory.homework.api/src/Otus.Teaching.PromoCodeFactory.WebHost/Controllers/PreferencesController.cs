@@ -13,20 +13,12 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class PreferencesController
-        : ControllerBase
+    public class PreferencesController(IRepository<Preference> preferencesRepository) : ControllerBase
     {
-        private readonly IRepository<Preference> _preferencesRepository;
-
-        public PreferencesController(IRepository<Preference> preferencesRepository)
-        {
-            _preferencesRepository = preferencesRepository;
-        }
-        
         [HttpGet]
         public async Task<ActionResult<List<PreferenceResponse>>> GetPreferencesAsync()
         {
-            var preferences = await _preferencesRepository.GetAllAsync();
+            var preferences = await preferencesRepository.GetAllAsync();
 
             var response = preferences.Select(x => new PreferenceResponse()
             {

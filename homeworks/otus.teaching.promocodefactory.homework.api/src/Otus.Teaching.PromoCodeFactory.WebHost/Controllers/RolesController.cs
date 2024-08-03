@@ -13,15 +13,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class RolesController
+    public class RolesController(IRepository<Role> rolesRepository)
     {
-        private readonly IRepository<Role> _rolesRepository;
-
-        public RolesController(IRepository<Role> rolesRepository)
-        {
-            _rolesRepository = rolesRepository;
-        }
-        
         /// <summary>
         /// Получить все доступные роли сотрудников
         /// </summary>
@@ -29,7 +22,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet]
         public async Task<IEnumerable<RoleItemResponse>> GetRolesAsync()
         {
-            var roles = await _rolesRepository.GetAllAsync();
+            var roles = await rolesRepository.GetAllAsync();
 
             var rolesModelList = roles.Select(x => 
                 new RoleItemResponse()
