@@ -1,0 +1,89 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GreeterNamespace";
+
+package greeter;
+
+service Customer {
+
+  rpc GetCustomersAsync (CustomerShortRequest) returns (CustomerShortResponseList);
+  rpc GetCustomerAsync (GetCustomerRequest) returns (CustomerShortResponse);
+  rpc CreateCustomerAsync (CreateOrEditCustomerRequest) returns (CustomerResponse);
+  rpc EditCustomersAsync (EditCustomerRequest) returns (EditCustomerResponse);
+  rpc DeleteCustomerAsync (DeleteCustomerRequest) returns (DeleteCustomerResponse);
+
+}
+
+//Params
+
+//GetCustomersAsync
+message CustomerShortRequest {
+}
+
+message CustomerShortResponse {
+  string Id = 1;
+  string Email = 2;
+  string FirstName = 3;
+  string LastName = 4;
+}
+
+message CustomerShortResponseList {
+  repeated CustomerShortResponse customers = 1;
+}
+
+
+//GetCustomerAsync
+message GetCustomerRequest {
+  string id = 1; 
+}
+
+
+//CreateCustomerAsync
+message CreateOrEditCustomerRequest {
+  string Email = 1;
+  string FirstName = 2;
+  string LastName = 3;
+  repeated string PreferenceIds = 4;
+}
+
+message CustomerResponse {
+  string Id = 1;
+  string Email = 2;
+  string FirstName = 3;
+  string LastName = 4;
+  repeated Preference Preferences = 5;
+  repeated PromoCode PromoCode = 6;
+}
+
+message Preference {
+  string Id = 1;
+  string Name = 2;
+}
+
+message PromoCode {
+  string Id = 1;
+  string Code = 2;
+  string ServiceInfo = 3;
+  string BeginDate = 4;
+  string EndDate = 5;
+  string PartnerName = 6;
+}
+
+
+//EditCustomersAsync
+message EditCustomerRequest {
+  string id = 1;
+  CreateOrEditCustomerRequest request = 2;
+}
+
+message EditCustomerResponse {
+}
+
+
+//DeleteCustomerAsync
+message DeleteCustomerRequest {
+  string id = 1;
+}
+
+message DeleteCustomerResponse {
+}

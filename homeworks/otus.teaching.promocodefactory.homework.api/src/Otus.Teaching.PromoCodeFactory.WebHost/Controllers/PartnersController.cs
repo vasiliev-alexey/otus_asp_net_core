@@ -15,22 +15,13 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class PartnersController
+    public class PartnersController(IRepository<Partner> partnersRepository, INotificationGateway notificationGateway)
         : ControllerBase
     {
-        private readonly IRepository<Partner> _partnersRepository;
-        private readonly INotificationGateway _notificationGateway;
-
-        public PartnersController(IRepository<Partner> partnersRepository, INotificationGateway notificationGateway)
-        {
-            _partnersRepository = partnersRepository;
-            _notificationGateway = notificationGateway;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<PartnerResponse>>> GetPartnersAsync()
         {
-            var partners = await _partnersRepository.GetAllAsync();
+            var partners = await partnersRepository.GetAllAsync();
 
             var response = partners.Select(x => new PartnerResponse()
             {
@@ -56,7 +47,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<List<PartnerResponse>>> GetPartnersAsync(Guid id)
         {
-            var partner = await _partnersRepository.GetByIdAsync(id);
+            var partner = await partnersRepository.GetByIdAsync(id);
 
             var response = new PartnerResponse()
             {
@@ -82,7 +73,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet("{id}/limits/{limitId}")]
         public async Task<ActionResult<PartnerPromoCodeLimit>> GetPartnerLimitAsync(Guid id, Guid limitId)
         {
-            var partner = await _partnersRepository.GetByIdAsync(id);
+            var partner = await partnersRepository.GetByIdAsync(id);
 
             if (partner == null)
                 return NotFound();
@@ -106,7 +97,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpPost("{id}/limits")]
         public async Task<IActionResult> SetPartnerPromoCodeLimitAsync(Guid id, SetPartnerPromoCodeLimitRequest request)
         {
-            var partner = await _partnersRepository.GetByIdAsync(id);
+            var partner = await partnersRepository.GetByIdAsync(id);
 
             if (partner == null)
                 return NotFound();
@@ -144,9 +135,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             
             partner.PartnerLimits.Add(newLimit);
 
-            await _partnersRepository.UpdateAsync(partner);
+            await partnersRepository.UpdateAsync(partner);
             
-            await _notificationGateway
+            await notificationGateway
                 .SendNotificationToPartnerAsync(partner.Id, "Вам установлен лимит на отправку промокодов...");
             
             return CreatedAtAction(nameof(GetPartnerLimitAsync), new {id = partner.Id, limitId = newLimit.Id}, null);
@@ -155,7 +146,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpPost("{id}/canceledLimits")]
         public async Task<IActionResult> CancelPartnerPromoCodeLimitAsync(Guid id)
         {
-            var partner = await _partnersRepository.GetByIdAsync(id);
+            var partner = await partnersRepository.GetByIdAsync(id);
             
             if (partner == null)
                 return NotFound();
@@ -173,10 +164,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 activeLimit.CancelDate = DateTime.Now;
             }
 
-            await _partnersRepository.UpdateAsync(partner);
+            await partnersRepository.UpdateAsync(partner);
 
             //Отправляем уведомление
-            await _notificationGateway
+            await notificationGateway
                 .SendNotificationToPartnerAsync(partner.Id, "Ваш лимит на отправку промокодов отменен...");
             
             return NoContent();
